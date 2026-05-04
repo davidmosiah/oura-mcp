@@ -31,7 +31,7 @@ export function buildCapabilities() {
     supported_data: [
       { name: "Personal info", examples: ["age", "height", "weight", "biological sex", "email when granted"], tools: ["oura_get_personal_info"] },
       { name: "Daily recovery context", examples: ["readiness score", "sleep score", "activity score", "contributors"], tools: ["oura_list_daily_readiness", "oura_list_daily_sleep", "oura_list_daily_activity"] },
-      { name: "Sleep", examples: ["sleep periods", "duration", "stages", "efficiency", "average HRV"], tools: ["oura_list_sleep", "oura_daily_summary", "oura_weekly_summary"] },
+      { name: "Sleep", examples: ["sleep periods", "duration", "stages", "efficiency", "average HRV"], tools: ["oura_list_sleep", "oura_daily_summary", "oura_weekly_summary", "oura_wellness_context"] },
       { name: "Heart and oxygen", examples: ["heart-rate time series", "lowest heart rate", "average HRV", "daily SpO2"], tools: ["oura_list_heartrate", "oura_list_daily_spo2"] },
       { name: "Workouts and context", examples: ["workout summaries", "sessions", "tags"], tools: ["oura_list_workouts", "oura_list_sessions", "oura_list_tags"] }
     ],
@@ -40,6 +40,7 @@ export function buildCapabilities() {
       "Call oura_connection_status before calling Oura data tools.",
       "If setup is incomplete, guide the user through setup, auth and doctor.",
       "Use oura_daily_summary or oura_weekly_summary before low-level endpoint tools.",
+      "Use oura_wellness_context when handing readiness/sleep/load context to Exercise Catalog.",
       "Treat health data as sensitive; avoid raw payloads unless explicitly requested.",
       "Use Oura as trend context, not medical diagnosis. Escalate symptoms or abnormal vitals to clinicians."
     ],

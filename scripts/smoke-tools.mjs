@@ -8,7 +8,7 @@ const expectedTools = [
   'oura_list_daily_activity', 'oura_list_daily_readiness', 'oura_list_daily_sleep',
   'oura_list_daily_spo2', 'oura_list_heartrate', 'oura_list_sessions', 'oura_list_sleep',
   'oura_list_tags', 'oura_list_workouts', 'oura_privacy_audit', 'oura_revoke_access',
-  'oura_weekly_summary'
+  'oura_weekly_summary', 'oura_wellness_context'
 ];
 
 const expectedResources = ['oura://agent-manifest', 'oura://capabilities', 'oura://latest/readiness', 'oura://personal-info', 'oura://summary/daily', 'oura://summary/weekly'];

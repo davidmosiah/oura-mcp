@@ -8,6 +8,7 @@ export const HERMES_DIRECT_TOOLS = [
   "mcp_oura_oura_connection_status",
   "mcp_oura_oura_daily_summary",
   "mcp_oura_oura_weekly_summary",
+  "mcp_oura_oura_wellness_context",
   "mcp_oura_oura_list_daily_readiness",
   "mcp_oura_oura_list_daily_sleep",
   "mcp_oura_oura_list_heartrate"
@@ -31,6 +32,7 @@ const STANDARD_TOOLS = [
   "oura_list_tags",
   "oura_daily_summary",
   "oura_weekly_summary",
+  "oura_wellness_context",
   "oura_privacy_audit",
   "oura_cache_status",
   "oura_revoke_access"
@@ -62,7 +64,7 @@ export function buildAgentManifest(client: AgentClientName = "generic") {
       token_storage: "~/.oura-mcp/tokens.json with 0600 permissions",
       secret_storage: "~/.oura-mcp/config.json or OURA_* environment variables; never print secrets"
     },
-    recommended_first_calls: ["oura_connection_status", "oura_daily_summary", "oura_weekly_summary"],
+    recommended_first_calls: ["oura_connection_status", "oura_wellness_context", "oura_daily_summary", "oura_weekly_summary"],
     standard_tools: STANDARD_TOOLS,
     resources: RESOURCES,
     hermes: {
@@ -131,7 +133,7 @@ ${manifest.agent_rules.map((rule) => `- ${rule}`).join("\n")}
 }
 
 export function hermesConfigSnippet(): string {
-  return `mcp_servers:\n  oura:\n    command: npx\n    args:\n      - -y\n      - ${PINNED_NPM_PACKAGE}`;
+  return `mcp_servers:\n  oura:\n    command: npx\n    args:\n      - -y\n      - ${PINNED_NPM_PACKAGE}\n    timeout: 120\n    connect_timeout: 60\n    sampling:\n      enabled: false`;
 }
 
 export function hermesSkillMarkdown(): string {
