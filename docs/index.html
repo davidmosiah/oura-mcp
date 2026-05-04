@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oura MCP Unofficial — Health Signals for AI Agents</title>
+  <meta name="description" content="Unofficial local-first Oura MCP server for AI agents. Connect readiness, sleep, activity, heart-rate, HRV, SpO2 and workout context through the official Oura Cloud API v2.">
+  <meta name="keywords" content="Oura MCP, Oura API, Model Context Protocol, AI agents, Claude, Cursor, Hermes, OpenClaw, sleep, HRV, heart rate, health data">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://ouramcp.vercel.app/">
+  <meta property="og:title" content="Oura MCP Unofficial">
+  <meta property="og:description" content="Your Oura signal, safely available to your AI agent. Local-first OAuth, 20 tools, daily and weekly health summaries.">
+  <meta property="og:image" content="https://ouramcp.vercel.app/assets/og-card.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/site.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"Oura MCP Unofficial","codeRepository":"https://github.com/davidmosiah/ouramcp","url":"https://ouramcp.vercel.app/","programmingLanguage":"TypeScript","runtimePlatform":"Node.js","license":"https://github.com/davidmosiah/ouramcp/blob/main/LICENSE","applicationCategory":"DeveloperApplication","description":"Unofficial local-first MCP server that connects AI agents to user-authorized Oura Cloud API v2 data."}
+  </script>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="grid-noise"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Oura MCP home"><span class="brand-glyph"><i></i><i></i><i></i><i></i><i></i></span><span><strong>Oura MCP</strong><small>unofficial local bridge</small></span></a>
+    <nav class="nav" aria-label="Primary navigation"><a href="#install">Install</a><a href="#signals">Signals</a><a href="#agents">Agents</a><a href="#privacy">Privacy</a><a class="nav-cta" href="https://github.com/davidmosiah/ouramcp">GitHub</a></nav>
+  </header>
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Read-only OAuth · local tokens · agent-native health context</p>
+        <h1>Your body already sends signals. Your agent should know how to listen.</h1>
+        <p class="hero-text">Oura MCP is an unofficial, open-source bridge that gives AI agents safe access to your Oura readiness, sleep, activity, heart-rate, HRV, SpO2 and workout context through the official Oura Cloud API v2.</p>
+        <div class="hero-actions"><a class="button primary" href="#install">Install in 3 minutes</a><a class="button ghost" href="https://github.com/davidmosiah/ouramcp">View source</a><a class="button ghost" href="https://www.npmjs.com/package/oura-mcp-unofficial">npm</a></div>
+        <div class="command-pill"><code>npx -y oura-mcp-unofficial setup</code><button type="button" data-copy="npx -y oura-mcp-unofficial setup&#10;npx -y oura-mcp-unofficial auth&#10;npx -y oura-mcp-unofficial doctor">Copy</button></div>
+      </div>
+      <div class="signal-stage" aria-label="Oura signal dashboard preview">
+        <div class="stage-ring ring-one"></div><div class="stage-ring ring-two"></div><div class="core-orb"><span>20</span><small>tools</small></div>
+        <svg class="ecg" viewBox="0 0 560 150" role="img" aria-label="Animated heart signal line"><path d="M8 84 H72 L91 84 L110 36 L136 118 L162 84 H238 L266 84 L286 58 L306 102 L328 84 H410 L432 84 L452 24 L484 126 L506 84 H552"/></svg>
+        <article class="metric-card card-sleep"><small>Sleep</small><strong>7h 10m</strong><span>stage-ready context</span></article>
+        <article class="metric-card card-hrv"><small>HRV</small><strong>48 ms</strong><span>trend, not diagnosis</span></article>
+        <article class="metric-card card-load"><small>Activity</small><strong>9,000</strong><span>steps + active minutes</span></article>
+      </div>
+    </section>
+    <section class="proof-strip" aria-label="Project facts"><article><strong>Official API</strong><span>Oura Cloud API v2 OAuth2</span></article><article><strong>Local-first</strong><span>tokens under ~/.oura-mcp</span></article><article><strong>20 tools</strong><span>readiness, sleep, activity, heart, SpO2</span></article><article><strong>Agent-ready</strong><span>Claude, Cursor, Hermes, OpenClaw</span></article></section>
+    <section id="install" class="section-shell install-section"><div class="section-head"><p class="eyebrow">For humans</p><h2>No API archaeology. No token pasted into agent configs.</h2><p>Oura developer setup is the hard part. This page gives the exact callback, scopes and commands so a non-technical user can delegate the install safely.</p></div><div class="install-grid"><article class="install-card"><span>01</span><h3>Create your Oura app</h3><p>Open the Oura developer console and add this callback URL.</p><div class="copy-row"><code>http://127.0.0.1:3000/callback</code><button data-copy="http://127.0.0.1:3000/callback">Copy</button></div><a href="https://cloud.ouraring.com/oauth/applications">Open Oura apps</a></article><article class="install-card featured"><span>02</span><h3>Grant read scopes</h3><p>The MCP is read-only by default. It needs the scopes below for health and training summaries.</p><div class="copy-row"><code>daily heartrate personal sleep workout spo2</code><button data-copy="daily heartrate personal sleep workout spo2">Copy</button></div></article><article class="install-card terminal-card"><span>03</span><h3>Run setup</h3><pre><code>npx -y oura-mcp-unofficial setup
+npx -y oura-mcp-unofficial auth
+npx -y oura-mcp-unofficial doctor</code></pre><button data-copy="npx -y oura-mcp-unofficial setup&#10;npx -y oura-mcp-unofficial auth&#10;npx -y oura-mcp-unofficial doctor">Copy commands</button></article></div></section>
+    <section id="signals" class="section-shell signals-section"><div class="section-head narrow"><p class="eyebrow">The toolbelt</p><h2>Processed health signals, shaped for agents.</h2></div><div class="tool-grid"><article><b>Activity</b><span>daily activity score, steps, calories and distance</span></article><article><b>Sleep</b><span>logs, duration, efficiency and stages when Oura provides them</span></article><article><b>Heart</b><span>heart-rate records when account and scopes permit</span></article><article><b>Recovery context</b><span>HRV, readiness contributors and SpO2 availability by account/device</span></article><article><b>Workouts</b><span>workout summaries, sessions and tags when granted</span></article></div></section>
+    <section id="agents" class="section-shell agent-section"><div class="agent-panel"><div><p class="eyebrow">For agents</p><h2>A manifest that tells agents how not to break things.</h2><p>Agents should call <code>oura_agent_manifest</code> and <code>oura_connection_status</code> first. Hermes gets direct tool names and explicit reload guidance so it does not restart the gateway for normal Oura access.</p></div><div class="agent-prompt"><button data-copy="Install the unofficial Oura MCP server for me. Repository: https://github.com/davidmosiah/ouramcp. Create a Oura app with callback http://127.0.0.1:3000/callback and read scopes daily heartrate personal sleep workout spo2. Run npx -y oura-mcp-unofficial setup, auth and doctor. If this is Hermes, use setup --client hermes and reload MCP with /reload-mcp or hermes mcp test oura. Do not print tokens or secrets. Do not provide medical diagnosis.">Copy delegation prompt</button><pre><code>Install the unofficial Oura MCP server for me.
+Repo: github.com/davidmosiah/ouramcp
+Scopes: daily heartrate personal sleep workout spo2
+Then run setup, auth and doctor.
+Keep tokens local. No medical diagnosis.</code></pre></div></div></section>
+    <section id="privacy" class="section-shell privacy-section"><div class="section-head narrow"><p class="eyebrow">Trust boundary</p><h2>Health data is not a toy payload.</h2><p>This MCP exposes processed Oura Cloud API v2 data. It does not expose raw accelerometer telemetry, private Google endpoints, or clinical diagnosis. Raw JSON is explicit; summary and structured modes are safer defaults.</p></div><div class="privacy-grid"><article><strong>summary</strong><span>minimal safe fields</span></article><article><strong>structured</strong><span>normalized agent data</span></article><article><strong>raw</strong><span>explicit upstream JSON</span></article><article><strong>0600</strong><span>local token permissions</span></article></div></section>
+    <section class="closing section-shell"><div><p class="eyebrow">Open source quantified-self infrastructure</p><h2>Make personal health agents safer, clearer and more useful.</h2></div><div class="hero-actions"><a class="button primary" href="https://github.com/davidmosiah/ouramcp">Star on GitHub</a><a class="button ghost" href="quickstart.md">Read quickstart</a></div></section>
+  </main>
+  <footer class="footer">Unofficial project. Not affiliated with Oura. Not medical advice.</footer>
+  <script src="assets/site.js"></script>
+</body>
+</html>

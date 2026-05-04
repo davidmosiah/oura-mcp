@@ -1,0 +1,8 @@
+Oura MCP Unofficial
+
+Unofficial local-first MCP server for connecting AI agents to user-authorized Oura Cloud API v2 data.
+
+Default scopes: daily heartrate personal sleep workout spo2.
+Important tools: oura_connection_status, oura_daily_summary, oura_weekly_summary, oura_list_daily_readiness, oura_list_daily_sleep, oura_list_heartrate.
+Privacy: tokens stay local under ~/.oura-mcp. summary and structured modes minimize sensitive output. raw mode is explicit.
+Boundary: not affiliated with Oura. Not medical advice. Does not expose raw device telemetry.

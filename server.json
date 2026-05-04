@@ -1,0 +1,71 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.davidmosiah/ouramcp",
+  "description": "Privacy-first, unofficial Oura MCP server for AI health, sleep, activity and heart-rate agents.",
+  "repository": {
+    "url": "https://github.com/davidmosiah/ouramcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "oura-mcp-unofficial",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "OURA_CLIENT_ID",
+          "description": "Oura OAuth client ID. Optional when configured with oura-mcp-server setup.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "OURA_CLIENT_SECRET",
+          "description": "Oura OAuth client secret. Prefer oura-mcp-server setup so this secret is stored in ~/.oura-mcp/config.json instead of MCP client config.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "OURA_REDIRECT_URI",
+          "description": "Redirect URI configured in the Oura Developer Dashboard. Optional when configured with oura-mcp-server setup.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "OURA_TOKEN_PATH",
+          "description": "Optional local path for OAuth tokens. Defaults to ~/.oura-mcp/tokens.json.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "OURA_PRIVACY_MODE",
+          "description": "Optional payload mode: summary, structured, or raw. Defaults to structured. raw means full Oura API payloads, not continuous 24/7 raw sensor telemetry.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "OURA_CACHE",
+          "description": "Optional SQLite cache toggle. Set to true or sqlite to enable.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "OURA_CACHE_PATH",
+          "description": "Optional local SQLite cache path. Defaults to ~/.oura-mcp/cache.sqlite.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

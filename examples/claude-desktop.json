@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "oura": {
+      "command": "npx",
+      "args": ["-y", "oura-mcp-unofficial"]
+    }
+  }
+}
