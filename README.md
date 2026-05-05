@@ -189,7 +189,8 @@ npx @modelcontextprotocol/inspector node dist/index.js
 ## Links
 
 - npm: <https://www.npmjs.com/package/oura-mcp-unofficial>
-- Docs site: <https://ouramcp.vercel.app/>
+- Docs site: <https://wellness.delx.ai/connectors/oura>
+- Legacy docs: <https://ouramcp.vercel.app/>
 - GitHub: <https://github.com/davidmosiah/ouramcp>
 - Delx Wellness registry: <https://github.com/davidmosiah/delx-wellness>
 - Connector quality standard: <https://github.com/davidmosiah/delx-wellness/blob/main/docs/connector-quality-standard.md>

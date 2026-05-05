@@ -75,7 +75,7 @@
   "bugs": {
     "url": "https://github.com/davidmosiah/ouramcp/issues"
   },
-  "homepage": "https://ouramcp.vercel.app/",
+  "homepage": "https://wellness.delx.ai/connectors/oura",
   "mcpName": "io.github.davidmosiah/ouramcp",
   "publishConfig": {
     "access": "public",
