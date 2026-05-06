@@ -4,14 +4,17 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 
 const expectedTools = [
   'oura_agent_manifest', 'oura_cache_status', 'oura_capabilities', 'oura_connection_status',
-  'oura_daily_summary', 'oura_exchange_code', 'oura_get_auth_url', 'oura_get_personal_info',
-  'oura_list_daily_activity', 'oura_list_daily_readiness', 'oura_list_daily_sleep',
+  'oura_daily_summary', 'oura_data_inventory', 'oura_exchange_code', 'oura_get_auth_url',
+  'oura_get_personal_info', 'oura_list_daily_activity', 'oura_list_daily_readiness', 'oura_list_daily_sleep',
   'oura_list_daily_spo2', 'oura_list_heartrate', 'oura_list_sessions', 'oura_list_sleep',
   'oura_list_tags', 'oura_list_workouts', 'oura_privacy_audit', 'oura_revoke_access',
   'oura_weekly_summary', 'oura_wellness_context'
 ];
 
-const expectedResources = ['oura://agent-manifest', 'oura://capabilities', 'oura://latest/readiness', 'oura://personal-info', 'oura://summary/daily', 'oura://summary/weekly'];
+const expectedResources = [
+  'oura://agent-manifest', 'oura://capabilities', 'oura://inventory', 'oura://latest/readiness',
+  'oura://personal-info', 'oura://summary/daily', 'oura://summary/weekly'
+];
 const expectedPrompts = ['oura_daily_checkin', 'oura_heart_context_investigation', 'oura_weekly_review'];
 
 const client = new Client({ name: 'oura-mcp-smoke-test', version: '0.0.0' });
@@ -42,6 +45,10 @@ try {
   assert.ok(capabilitiesResult.structuredContent?.api_boundary?.does_not_include?.includes('raw accelerometer/device telemetry'));
   assert.ok(capabilitiesResult.structuredContent?.supported_data?.some((entry) => entry.tools?.includes('oura_list_daily_readiness')));
   assert.ok(capabilitiesResult.structuredContent?.recommended_agent_flow?.some((step) => step.includes('oura_connection_status')));
+
+  const inventoryResult = await client.callTool({ name: 'oura_data_inventory', arguments: { response_format: 'json' } });
+  assert.equal(inventoryResult.structuredContent?.kind, 'data_inventory');
+  assert.equal(typeof inventoryResult.structuredContent?.source, 'string');
 
   const manifestResult = await client.callTool({ name: 'oura_agent_manifest', arguments: { client: 'hermes', response_format: 'json' } });
   assert.equal(manifestResult.structuredContent?.client, 'hermes');

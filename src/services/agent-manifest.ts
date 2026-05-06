@@ -4,41 +4,27 @@ export const AGENT_CLIENTS = ["generic", "claude", "cursor", "windsurf", "hermes
 export type AgentClientName = typeof AGENT_CLIENTS[number];
 
 export const HERMES_DIRECT_TOOLS = [
-  "mcp_oura_oura_agent_manifest",
-  "mcp_oura_oura_connection_status",
-  "mcp_oura_oura_daily_summary",
-  "mcp_oura_oura_weekly_summary",
-  "mcp_oura_oura_wellness_context",
-  "mcp_oura_oura_list_daily_readiness",
-  "mcp_oura_oura_list_daily_sleep",
-  "mcp_oura_oura_list_heartrate"
+  "mcp_oura_oura_agent_manifest", "mcp_oura_oura_connection_status", "mcp_oura_oura_daily_summary",
+  "mcp_oura_oura_data_inventory", "mcp_oura_oura_list_daily_readiness", "mcp_oura_oura_list_daily_sleep",
+  "mcp_oura_oura_list_heartrate", "mcp_oura_oura_weekly_summary", "mcp_oura_oura_wellness_context"
 ];
 
 const STANDARD_TOOLS = [
-  "oura_agent_manifest",
-  "oura_capabilities",
-  "oura_connection_status",
-  "oura_get_auth_url",
-  "oura_exchange_code",
-  "oura_get_personal_info",
-  "oura_list_daily_activity",
-  "oura_list_daily_sleep",
-  "oura_list_daily_readiness",
-  "oura_list_sleep",
-  "oura_list_workouts",
-  "oura_list_heartrate",
-  "oura_list_daily_spo2",
-  "oura_list_sessions",
-  "oura_list_tags",
-  "oura_daily_summary",
-  "oura_weekly_summary",
-  "oura_wellness_context",
-  "oura_privacy_audit",
-  "oura_cache_status",
-  "oura_revoke_access"
+  "oura_agent_manifest", "oura_cache_status", "oura_capabilities",
+  "oura_connection_status", "oura_daily_summary", "oura_data_inventory",
+  "oura_exchange_code", "oura_get_auth_url", "oura_get_personal_info",
+  "oura_list_daily_activity", "oura_list_daily_readiness", "oura_list_daily_sleep",
+  "oura_list_daily_spo2", "oura_list_heartrate", "oura_list_sessions",
+  "oura_list_sleep", "oura_list_tags", "oura_list_workouts",
+  "oura_privacy_audit", "oura_revoke_access", "oura_weekly_summary",
+  "oura_wellness_context"
 ];
 
-const RESOURCES = ["oura://agent-manifest", "oura://capabilities", "oura://personal-info", "oura://latest/readiness", "oura://summary/daily", "oura://summary/weekly"];
+const RESOURCES = [
+  "oura://agent-manifest", "oura://capabilities", "oura://inventory",
+  "oura://latest/readiness", "oura://personal-info", "oura://summary/daily",
+  "oura://summary/weekly"
+];
 
 export function parseAgentClientName(value: string): AgentClientName {
   return AGENT_CLIENTS.includes(value as AgentClientName) ? value as AgentClientName : "generic";
@@ -64,7 +50,7 @@ export function buildAgentManifest(client: AgentClientName = "generic") {
       token_storage: "~/.oura-mcp/tokens.json with 0600 permissions",
       secret_storage: "~/.oura-mcp/config.json or OURA_* environment variables; never print secrets"
     },
-    recommended_first_calls: ["oura_connection_status", "oura_wellness_context", "oura_daily_summary", "oura_weekly_summary"],
+    recommended_first_calls: ["oura_connection_status", "oura_data_inventory", "oura_wellness_context", "oura_daily_summary", "oura_weekly_summary"],
     standard_tools: STANDARD_TOOLS,
     resources: RESOURCES,
     hermes: {
@@ -80,7 +66,7 @@ export function buildAgentManifest(client: AgentClientName = "generic") {
       doctor_command: "npx -y oura-mcp-unofficial doctor --client hermes --json"
     },
     agent_rules: [
-      "Call oura_connection_status before Oura data tools.",
+      "Call oura_connection_status and oura_data_inventory before Oura data tools.",
       "If setup is incomplete, guide the user through setup, auth and doctor instead of guessing token state.",
       "Treat Oura health data as sensitive. Do not expose raw payloads unless the user asks for raw mode.",
       "Heart-rate, SpO2 and personal fields depend on ring generation, membership, app scopes and the user's consent; explain permission errors clearly.",

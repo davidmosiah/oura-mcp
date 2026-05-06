@@ -11,12 +11,13 @@ import {
   ConnectionStatusInputSchema,
   ConnectionStatusOutputSchema,
   DailySummaryInputSchema,
+  DataInventoryOutputSchema,
   EndpointDataOutputSchema,
   ExchangeCodeInputSchema,
   ExchangeCodeOutputSchema,
   PrivacyAuditOutputSchema,
-  RevokeAccessOutputSchema,
   ResponseOnlyInputSchema,
+  RevokeAccessOutputSchema,
   SimpleReadInputSchema,
   SummaryOutputSchema,
   WeeklySummaryInputSchema,
@@ -26,6 +27,7 @@ import {
 import { buildAgentManifest, formatAgentManifestMarkdown } from "../services/agent-manifest.js";
 import { buildPrivacyAudit } from "../services/audit.js";
 import { buildCapabilities } from "../services/capabilities.js";
+import { buildDataInventory, formatInventoryMarkdown } from "../services/inventory.js";
 import { buildConnectionStatus } from "../services/connection-status.js";
 import { getConfig } from "../services/config.js";
 import { bulletList, formatCollection, makeError, makeResponse } from "../services/format.js";
@@ -72,6 +74,21 @@ function registerCollectionTool(server: McpServer, name: string, title: string, 
 }
 
 export function registerOuraTools(server: McpServer): void {
+  server.registerTool("oura_data_inventory", {
+    title: "Oura Data Inventory",
+    description: "Inventory supported Oura data domains, auth scope requirements, privacy boundary and recommended first calls. Does not call Oura APIs or expose user data.",
+    inputSchema: ResponseOnlyInputSchema.shape,
+    outputSchema: DataInventoryOutputSchema.shape,
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false
+    }
+  }, async ({ response_format }) => {
+    const inventory = buildDataInventory();
+    return makeResponse(inventory, response_format, formatInventoryMarkdown(inventory));
+  });
   server.registerTool("oura_agent_manifest", {
     title: "Oura Agent Manifest",
     description: "Machine-readable install, runtime and client guidance for AI agents. Does not call Oura or expose secrets.",

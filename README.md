@@ -98,6 +98,7 @@ This package uses the official Oura Cloud API v2. When this README says `raw`, i
 **Start with these:**
 
 - `oura_connection_status` — verify local setup before calling Oura
+- `oura_data_inventory` — inventory supported data domains, scopes, privacy modes and recommended first calls without calling Oura APIs.
 - `oura_daily_summary` — readiness, sleep, activity and SpO2 brief for today
 - `oura_weekly_summary` — scorecard, comparison vs prior week, next-week plan
 

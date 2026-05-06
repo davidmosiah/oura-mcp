@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ReadResourceResult } from "@modelcontextprotocol/sdk/types.js";
 import { buildAgentManifest, formatAgentManifestMarkdown } from "../services/agent-manifest.js";
 import { buildCapabilities } from "../services/capabilities.js";
+import { buildDataInventory } from "../services/inventory.js";
 import { getConfig } from "../services/config.js";
 import { applyPrivacy, resolvePrivacyMode } from "../services/privacy.js";
 import { buildDailySummary, buildWeeklySummary, formatSummaryMarkdown } from "../services/summary.js";
@@ -37,6 +38,7 @@ async function weeklySummaryResource(uri: URL) {
 }
 
 export function registerOuraResources(server: McpServer): void {
+  server.registerResource("oura_data_inventory", "oura://inventory", { title: "Oura Data Inventory", description: "Static inventory of supported Oura data domains, privacy modes and recommended first calls.", mimeType: "application/json" }, async (uri) => textResource(uri, JSON.stringify(buildDataInventory(), null, 2), "application/json"));
   server.registerResource("oura_capabilities", "oura://capabilities", { title: "Oura MCP Capabilities", description: "Static capabilities, API boundary, privacy modes and recommended agent workflow.", mimeType: "application/json" }, async (uri) => textResource(uri, JSON.stringify(buildCapabilities(), null, 2), "application/json"));
   server.registerResource("oura_agent_manifest", "oura://agent-manifest", { title: "Oura Agent Manifest", description: "Machine-readable install and operating instructions for AI agents.", mimeType: "text/markdown" }, async (uri) => textResource(uri, formatAgentManifestMarkdown(buildAgentManifest("generic"))));
   server.registerResource("oura_personal_info", "oura://personal-info", { title: "Oura Personal Info", description: "Authenticated Oura personal info using the configured privacy mode.", mimeType: "application/json" }, profileResource);
