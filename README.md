@@ -1,27 +1,37 @@
-# oura-mcp-server
+<!-- delx-wellness header v2 -->
+<h1 align="center">Oura MCP</h1>
 
+<div align="center">
+  <img src="assets/banner.png" alt="Oura MCP — Oura MCP for AI agents" width="85%" />
+</div>
 
-<!-- delx-wellness badges -->
-[![npm version](https://img.shields.io/npm/v/oura-mcp-unofficial?color=14b8a6)](https://www.npmjs.com/package/oura-mcp-unofficial)
-[![npm downloads](https://img.shields.io/npm/dw/oura-mcp-unofficial?color=14b8a6)](https://www.npmjs.com/package/oura-mcp-unofficial)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](https://opensource.org/licenses/MIT)
-[![Part of Delx Wellness](https://img.shields.io/badge/part%20of-Delx%20Wellness-0ea5a3)](https://wellness.delx.ai)
+<h3 align="center">
+  Give your AI agent your Oura readiness, sleep, activity and HRV &mdash; without copy-pasting from the Oura app.<br>
+  Local-first MCP server &mdash; <strong>tokens never leave your machine</strong>.
+</h3>
 
-> **One-command install** with [Delx Wellness for Hermes](https://github.com/davidmosiah/delx-wellness-hermes):
-> `npx -y delx-wellness-hermes setup` — preconfigures this connector and the other 8 in a dedicated Hermes profile.
+<p align="center">
+  <a href="https://www.npmjs.com/package/oura-mcp-unofficial"><img src="https://img.shields.io/npm/v/oura-mcp-unofficial?style=for-the-badge&labelColor=0F172A&color=10B981&logo=npm&logoColor=white" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/oura-mcp-unofficial"><img src="https://img.shields.io/npm/dm/oura-mcp-unofficial?style=for-the-badge&labelColor=0F172A&color=0EA5A3&logo=npm&logoColor=white" alt="npm downloads" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-22C55E?style=for-the-badge&labelColor=0F172A" alt="License MIT" /></a>
+  <a href="https://wellness.delx.ai/connectors/oura"><img src="https://img.shields.io/badge/SITE-wellness.delx.ai-0EA5A3?style=for-the-badge&labelColor=0F172A" alt="Site" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/davidmosiah/ouramcp/stargazers"><img src="https://img.shields.io/github/stars/davidmosiah/ouramcp?style=for-the-badge&labelColor=0F172A&color=FBBF24&logo=github" alt="GitHub stars" /></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/BUILT_FOR-MCP-7C3AED?style=for-the-badge&labelColor=0F172A" alt="Built for MCP" /></a>
+  <a href="https://github.com/davidmosiah/delx-wellness-hermes"><img src="https://img.shields.io/badge/HERMES-one--command_setup-10B981?style=for-the-badge&labelColor=0F172A" alt="Hermes one-command setup" /></a>
+  <a href="https://github.com/davidmosiah/delx-wellness"><img src="https://img.shields.io/badge/Oura-5C6068?style=for-the-badge&labelColor=0F172A&logoColor=white" alt="Oura" /></a>
+</p>
+
+> ⚡ **One-command install** with [Delx Wellness for Hermes](https://github.com/davidmosiah/delx-wellness-hermes):
+> `npx -y delx-wellness-hermes setup` &mdash; preconfigures this connector and the other 8 in a dedicated Hermes profile.
 >
-> Or wire it standalone into Claude Desktop / Cursor / ChatGPT Desktop — see the install section below.
-<!-- /delx-wellness badges -->
+> Or wire it standalone into Claude Desktop / Cursor / ChatGPT Desktop &mdash; see the install section below.
 
-[![MCP Compatible](https://img.shields.io/badge/MCP-compatible-7C3AED?style=flat-square&logo=anthropic&logoColor=white)](https://modelcontextprotocol.io)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Provider: Oura](https://img.shields.io/badge/data-Oura-00B0B9?style=flat-square)](https://oura.com)
-[![npm version](https://img.shields.io/npm/v/oura-mcp-unofficial?style=flat-square&color=cb3837&logo=npm)](https://www.npmjs.com/package/oura-mcp-unofficial)
-[![GitHub stars](https://img.shields.io/github/stars/davidmosiah/ouramcp?style=flat-square&logo=github)](https://github.com/davidmosiah/ouramcp/stargazers)
-[![npm downloads](https://img.shields.io/npm/dm/oura-mcp-unofficial?style=flat-square&color=0ea5a3&logo=npm)](https://www.npmjs.com/package/oura-mcp-unofficial)
-[![Delx Wellness](https://img.shields.io/badge/part%20of-Delx%20Wellness-0ea5a3?style=flat-square)](https://github.com/davidmosiah/delx-wellness)
-[![Agent-ready MCP](https://img.shields.io/badge/agent--ready-MCP-0ea5a3?style=flat-square)](https://wellness.delx.ai/connectors/oura)
+---
+
+<!-- /delx-wellness header v2 -->
 
 **Local-first MCP server that connects AI agents to your Oura Ring readiness, sleep, activity and HRV data.**
 
