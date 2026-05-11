@@ -117,6 +117,132 @@ export function registerOuraTools(server: McpServer): void {
     }));
   });
 
+  server.registerTool(
+    "oura_quickstart",
+    {
+      title: "Oura Quickstart",
+      description:
+        "Personalized 3-step setup walkthrough for the human user. Adapts to current state (env vars set? token present? what's next?). Call this first when the user asks 'how do I connect Oura?'",
+      inputSchema: ResponseOnlyInputSchema.shape,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
+    },
+    async ({ response_format }) => {
+      const status = await buildConnectionStatus();
+      const hasEnv = status.missing_env.length === 0;
+      const hasToken = status.ready_for_oura_api;
+      const steps = [
+        {
+          step: 1,
+          title: hasEnv ? "(done) Oura Developer credentials configured" : "Sign up at https://cloud.ouraring.com/oauth/applications",
+          action: hasEnv
+            ? "OURA_CLIENT_ID, OURA_CLIENT_SECRET, OURA_REDIRECT_URI are all set."
+            : `Create an Oura Cloud OAuth app, register a redirect URI (use ${status.redirect_uri ?? "http://127.0.0.1:3000/callback"}), then set: ${status.missing_env.join(", ")}.`,
+          done: hasEnv,
+        },
+        {
+          step: 2,
+          title: hasToken ? "(done) Local token present — ready to read Oura data" : "Run the OAuth dance",
+          action: hasToken
+            ? "Tokens stored under ~/.oura-mcp/tokens.json. The connector will refresh automatically when needed."
+            : "Run `oura-mcp-server auth` (or call oura_get_auth_url + oura_exchange_code from the agent). Open the URL, grant access, paste the code. Recommended scopes: daily heartrate personal sleep workout spo2.",
+          done: hasToken,
+        },
+        {
+          step: 3,
+          title: "Verify with the agent",
+          action: "Call oura_connection_status, then oura_daily_summary or oura_wellness_context. Pair with wellness-nourish for recovery-aware meals.",
+          example: hasToken
+            ? "oura_wellness_context() → readiness + sleep stages + HRV handoff for nourish/cycle-coach."
+            : "Until step 2 is done, the data tools will surface a clear 'auth required' message.",
+          done: false,
+        },
+      ];
+      const payload = {
+        ok: true,
+        ready: hasEnv && hasToken,
+        steps,
+        next: steps.find((s) => !s.done) ?? steps[steps.length - 1],
+        cross_connector_hints: [
+          "Pair Oura readiness/sleep with wellness-nourish for recovery-aware meal coaching.",
+          "Pair Oura readiness with wellness-cycle-coach for late-luteal load adjustments.",
+          "Pair Oura HRV + wellness-cgm-mcp glucose for metabolic-stress signals.",
+        ],
+      };
+      const markdown = bulletList("Oura Quickstart", {
+        ready: payload.ready,
+        next: payload.next.title,
+      });
+      return makeResponse(payload, response_format, markdown);
+    }
+  );
+
+  server.registerTool(
+    "oura_demo",
+    {
+      title: "Oura Demo",
+      description:
+        "Returns realistic example payloads of oura_daily_summary, oura_wellness_context, and oura_list_daily_readiness so agents see the contract before calling real Oura APIs.",
+      inputSchema: ResponseOnlyInputSchema.shape,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
+    },
+    async ({ response_format }) => {
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+      const dayBefore = new Date(Date.now() - 2 * 86_400_000).toISOString().slice(0, 10);
+      const payload = {
+        ok: true,
+        is_demo: true,
+        sample: {
+          oura_daily_summary: {
+            date: today,
+            readiness: { score: 78, temperature_deviation: -0.1, hrv_balance: 84 },
+            sleep: { score: 82, efficiency: 89, duration_min: 451, deep_min: 92, rem_min: 108 },
+            activity: { score: 86, steps: 9420, active_calories: 412, target_calories: 500 },
+            spo2: { average: 96.8 },
+          },
+          oura_wellness_context: {
+            window: "last_24h",
+            readiness_score: 78,
+            readiness_band: "good",
+            sleep_score: 82,
+            sleep_efficiency: 89,
+            hrv_balance: 84,
+            recommendation: "Solid readiness and efficient sleep — green light for moderate-to-high intensity. A protein-forward breakfast keeps HRV trending up.",
+          },
+          oura_list_daily_readiness: {
+            count: 3,
+            records: [
+              { day: today, score: 78, contributors: { hrv_balance: 84, resting_heart_rate: 71, sleep_balance: 76 } },
+              { day: yesterday, score: 74, contributors: { hrv_balance: 79, resting_heart_rate: 73, sleep_balance: 72 } },
+              { day: dayBefore, score: 69, contributors: { hrv_balance: 68, resting_heart_rate: 80, sleep_balance: 65 } },
+            ],
+          },
+        },
+        notes: [
+          "All sample data is synthetic; tagged with is_demo=true.",
+          "Real calls return live data from the Oura Cloud v2 API after OAuth setup.",
+        ],
+      };
+      const markdown = bulletList("Oura Demo", {
+        is_demo: true,
+        readiness_score: 78,
+        sleep_efficiency: 89,
+        recommendation: payload.sample.oura_wellness_context.recommendation,
+      });
+      return makeResponse(payload, response_format, markdown);
+    }
+  );
+
   server.registerTool("oura_get_auth_url", {
     title: "Get Oura OAuth URL",
     description: "Generate an Oura OAuth authorization URL. Use this first when no local token exists.",

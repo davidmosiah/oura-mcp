@@ -12,12 +12,12 @@ export const HERMES_DIRECT_TOOLS = [
 const STANDARD_TOOLS = [
   "oura_agent_manifest", "oura_cache_status", "oura_capabilities",
   "oura_connection_status", "oura_daily_summary", "oura_data_inventory",
-  "oura_exchange_code", "oura_get_auth_url", "oura_get_personal_info",
-  "oura_list_daily_activity", "oura_list_daily_readiness", "oura_list_daily_sleep",
-  "oura_list_daily_spo2", "oura_list_heartrate", "oura_list_sessions",
-  "oura_list_sleep", "oura_list_tags", "oura_list_workouts",
-  "oura_privacy_audit", "oura_revoke_access", "oura_weekly_summary",
-  "oura_wellness_context"
+  "oura_demo", "oura_exchange_code", "oura_get_auth_url",
+  "oura_get_personal_info", "oura_list_daily_activity", "oura_list_daily_readiness",
+  "oura_list_daily_sleep", "oura_list_daily_spo2", "oura_list_heartrate",
+  "oura_list_sessions", "oura_list_sleep", "oura_list_tags",
+  "oura_list_workouts", "oura_privacy_audit", "oura_quickstart",
+  "oura_revoke_access", "oura_weekly_summary", "oura_wellness_context"
 ];
 
 const RESOURCES = [
@@ -50,7 +50,7 @@ export function buildAgentManifest(client: AgentClientName = "generic") {
       token_storage: "~/.oura-mcp/tokens.json with 0600 permissions",
       secret_storage: "~/.oura-mcp/config.json or OURA_* environment variables; never print secrets"
     },
-    recommended_first_calls: ["oura_connection_status", "oura_data_inventory", "oura_wellness_context", "oura_daily_summary", "oura_weekly_summary"],
+    recommended_first_calls: ["oura_quickstart", "oura_demo", "oura_connection_status", "oura_data_inventory", "oura_wellness_context"],
     standard_tools: STANDARD_TOOLS,
     resources: RESOURCES,
     hermes: {
