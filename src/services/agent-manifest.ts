@@ -16,7 +16,8 @@ const STANDARD_TOOLS = [
   "oura_get_personal_info", "oura_list_daily_activity", "oura_list_daily_readiness",
   "oura_list_daily_sleep", "oura_list_daily_spo2", "oura_list_heartrate",
   "oura_list_sessions", "oura_list_sleep", "oura_list_tags",
-  "oura_list_workouts", "oura_privacy_audit", "oura_quickstart",
+  "oura_list_workouts", "oura_onboarding", "oura_privacy_audit",
+  "oura_profile_get", "oura_profile_update", "oura_quickstart",
   "oura_revoke_access", "oura_weekly_summary", "oura_wellness_context"
 ];
 
@@ -50,7 +51,7 @@ export function buildAgentManifest(client: AgentClientName = "generic") {
       token_storage: "~/.oura-mcp/tokens.json with 0600 permissions",
       secret_storage: "~/.oura-mcp/config.json or OURA_* environment variables; never print secrets"
     },
-    recommended_first_calls: ["oura_quickstart", "oura_demo", "oura_connection_status", "oura_data_inventory", "oura_wellness_context"],
+    recommended_first_calls: ["oura_profile_get", "oura_quickstart", "oura_demo", "oura_connection_status", "oura_data_inventory", "oura_wellness_context"],
     standard_tools: STANDARD_TOOLS,
     resources: RESOURCES,
     hermes: {
