@@ -2,6 +2,7 @@ import { URL, URLSearchParams } from "node:url";
 import { DEFAULT_LIMIT, OURA_API_BASE_URL, OURA_AUTH_URL, OURA_REVOKE_URL, OURA_TOKEN_URL, MAX_OURA_LIMIT } from "../constants.js";
 import type { OuraConfig, OuraTokenSet } from "../types.js";
 import { disabledCacheStatus, OuraCache, type CacheStatus } from "./cache.js";
+import { fetchWithCache, getCacheStats } from "./http-cache.js";
 import { fetchWithRetry as fetchWithRetryMiddleware } from "./http-retry.js";
 import { redactErrorMessage } from "./redaction.js";
 import { TokenStore } from "./token-store.js";
@@ -66,8 +67,17 @@ export class OuraClient {
   }
 
   cacheStatus(): CacheStatus {
-    if (!this.config.cacheEnabled) return disabledCacheStatus(this.config.cachePath);
-    return this.getCache().status();
+    const httpStats = getCacheStats();
+    const http_cache = {
+      size: httpStats.size,
+      hit_count: httpStats.hit_count,
+      miss_count: httpStats.miss_count,
+      hit_rate: httpStats.hit_rate,
+      default_ttl_seconds: 60,
+      bypass_env_var: "OURA_NO_CACHE"
+    };
+    if (!this.config.cacheEnabled) return { ...disabledCacheStatus(this.config.cachePath), http_cache };
+    return { ...this.getCache().status(), http_cache };
   }
 
   async list(path: string, params: ListParams = {}): Promise<{ records: unknown[]; next_page?: number; pages_fetched: number }> {
@@ -242,9 +252,14 @@ export class OuraClient {
   }
 
   private async fetchWithRetry(url: string, init: RequestInit): Promise<Response> {
-    return fetchWithRetryMiddleware(fetch, url, init, {
+    const retryWrappedFetch = (u: string, i?: RequestInit) => fetchWithRetryMiddleware(fetch, u, i, {
       vendor: "oura",
       envFlag: "OURA_NO_RETRY"
+    });
+    return fetchWithCache(url, init, {
+      defaultTtlSeconds: 60,
+      envVarBypass: "OURA_NO_CACHE",
+      innerFetch: retryWrappedFetch
     });
   }
 }
