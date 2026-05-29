@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/davidmosiah/ouramcp/stargazers"><img src="https://img.shields.io/github/stars/davidmosiah/ouramcp?style=for-the-badge&labelColor=0F172A&color=FBBF24&logo=github" alt="GitHub stars" /></a>
+  <a href="https://github.com/davidmosiah/oura-mcp/stargazers"><img src="https://img.shields.io/github/stars/davidmosiah/oura-mcp?style=for-the-badge&labelColor=0F172A&color=FBBF24&logo=github" alt="GitHub stars" /></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/BUILT_FOR-MCP-7C3AED?style=for-the-badge&labelColor=0F172A" alt="Built for MCP" /></a>
   <a href="https://github.com/davidmosiah/delx-wellness-hermes"><img src="https://img.shields.io/badge/HERMES-one--command_setup-10B981?style=for-the-badge&labelColor=0F172A" alt="Hermes one-command setup" /></a>
   <a href="https://github.com/davidmosiah/delx-wellness"><img src="https://img.shields.io/badge/Oura-5C6068?style=for-the-badge&labelColor=0F172A&logoColor=white" alt="Oura" /></a>
@@ -202,8 +202,8 @@ If browser OAuth has to happen on a different machine than Hermes, run `auth` lo
 ## Development
 
 ```bash
-git clone https://github.com/davidmosiah/ouramcp.git
-cd ouramcp
+git clone https://github.com/davidmosiah/oura-mcp.git
+cd oura-mcp
 npm install
 npm test
 npm run build
@@ -220,7 +220,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 - npm: <https://www.npmjs.com/package/oura-mcp-unofficial>
 - Docs site: <https://wellness.delx.ai/connectors/oura>
 - Legacy docs: <https://ouramcp.vercel.app/>
-- GitHub: <https://github.com/davidmosiah/ouramcp>
+- GitHub: <https://github.com/davidmosiah/oura-mcp>
 - Delx Wellness registry: <https://github.com/davidmosiah/delx-wellness>
 - Connector quality standard: <https://github.com/davidmosiah/delx-wellness/blob/main/docs/connector-quality-standard.md>
 - Oura Cloud API docs: <https://cloud.ouraring.com/docs/authentication>
@@ -234,7 +234,7 @@ The full [Delx Wellness](https://wellness.delx.ai) connector library:
 | Provider | Package | Repo |
 |---|---|---|
 | WHOOP | [`whoop-mcp-unofficial`](https://www.npmjs.com/package/whoop-mcp-unofficial) | [whoop-mcp](https://github.com/davidmosiah/whoop-mcp) |
-| Oura | [`oura-mcp-unofficial`](https://www.npmjs.com/package/oura-mcp-unofficial) | [ouramcp](https://github.com/davidmosiah/ouramcp) |
+| Oura | [`oura-mcp-unofficial`](https://www.npmjs.com/package/oura-mcp-unofficial) | [oura-mcp](https://github.com/davidmosiah/oura-mcp) |
 | Garmin | [`garmin-mcp-unofficial`](https://www.npmjs.com/package/garmin-mcp-unofficial) | [garminmcp](https://github.com/davidmosiah/garminmcp) |
 | Strava | [`strava-mcp-unofficial`](https://www.npmjs.com/package/strava-mcp-unofficial) | [strava-mcp](https://github.com/davidmosiah/strava-mcp) |
 | Fitbit | [`fitbit-mcp-unofficial`](https://www.npmjs.com/package/fitbit-mcp-unofficial) | [fitbitmcp](https://github.com/davidmosiah/fitbitmcp) |
@@ -250,7 +250,7 @@ The full [Delx Wellness](https://wellness.delx.ai) connector library:
 ## 📧 Contact & Support
 
 - 📨 **support@delx.ai** — general questions, integration help, partnerships
-- 🐛 **Bug reports / feature requests** — [GitHub Issues](https://github.com/davidmosiah/ouramcp/issues)
+- 🐛 **Bug reports / feature requests** — [GitHub Issues](https://github.com/davidmosiah/oura-mcp/issues)
 - 🐦 **Updates** — [@delx369](https://x.com/delx369) on X
 - 🌐 **Site** — [wellness.delx.ai](https://wellness.delx.ai)
 
