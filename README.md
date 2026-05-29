@@ -80,6 +80,58 @@ Then add this to your MCP client config:
 
 For Claude Desktop, run `setup --client claude` and the snippet is written for you.
 
+## Quickstart: see the data before you connect
+
+No Oura account yet? Call `oura_demo` to get realistic example payloads for the
+readiness, sleep and daily-summary tools, so your agent learns the data contract
+before any OAuth setup. All values are synthetic and tagged `is_demo: true`.
+
+```text
+Call oura_demo and show me what the readiness and sleep data looks like.
+```
+
+Real output from `oura_demo` (`response_format=json`, dates are relative to today):
+
+```jsonc
+{
+  "ok": true,
+  "is_demo": true,
+  "sample": {
+    "oura_daily_summary": {
+      "date": "2026-05-29",
+      "readiness": { "score": 78, "temperature_deviation": -0.1, "hrv_balance": 84 },
+      "sleep": { "score": 82, "efficiency": 89, "duration_min": 451, "deep_min": 92, "rem_min": 108 },
+      "activity": { "score": 86, "steps": 9420, "active_calories": 412, "target_calories": 500 },
+      "spo2": { "average": 96.8 }
+    },
+    "oura_wellness_context": {
+      "window": "last_24h",
+      "readiness_score": 78,
+      "readiness_band": "good",
+      "sleep_score": 82,
+      "sleep_efficiency": 89,
+      "hrv_balance": 84,
+      "recommendation": "Solid readiness and efficient sleep — green light for moderate-to-high intensity. A protein-forward breakfast keeps HRV trending up."
+    },
+    "oura_list_daily_readiness": {
+      "count": 3,
+      "records": [
+        { "day": "2026-05-29", "score": 78, "contributors": { "hrv_balance": 84, "resting_heart_rate": 71, "sleep_balance": 76 } },
+        { "day": "2026-05-28", "score": 74, "contributors": { "hrv_balance": 79, "resting_heart_rate": 73, "sleep_balance": 72 } },
+        { "day": "2026-05-27", "score": 69, "contributors": { "hrv_balance": 68, "resting_heart_rate": 80, "sleep_balance": 65 } }
+      ]
+    }
+  },
+  "notes": [
+    "All sample data is synthetic; tagged with is_demo=true.",
+    "Real calls return live data from the Oura Cloud v2 API after OAuth setup."
+  ]
+}
+```
+
+When you're ready to connect your own ring, call `oura_quickstart` for a
+personalized 3-step setup walkthrough, then follow [Setup in 60 seconds](#setup-in-60-seconds).
+
 ## Try it with your agent
 
 Three things to ask first:
@@ -120,6 +172,8 @@ This package uses the official Oura Cloud API v2. When this README says `raw`, i
 
 **Start with these:**
 
+- `oura_demo` — realistic synthetic readiness/sleep/activity payloads (no account needed; see [Quickstart](#quickstart-see-the-data-before-you-connect))
+- `oura_quickstart` — personalized 3-step setup walkthrough that adapts to your current state
 - `oura_connection_status` — verify local setup before calling Oura
 - `oura_data_inventory` — inventory supported data domains, scopes, privacy modes and recommended first calls without calling Oura APIs.
 - `oura_daily_summary` — readiness, sleep, activity and SpO2 brief for today

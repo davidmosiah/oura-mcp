@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.6 - 2026-05-29
+
+### Docs
+
+- **README Quickstart** — new "see the data before you connect" section documenting `oura_demo`, with the real captured JSON payload for the readiness/sleep/daily-summary tools so agents learn the data contract before OAuth. Added `oura_demo` and `oura_quickstart` to the Tools list.
+
 ## 0.4.3 - 2026-05-20
 
 ### Added
