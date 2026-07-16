@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.7 - 2026-07-16
+
+### Fixed
+
+- Preserve the caller's calendar date when converting offset ISO date-times to Oura `start_date` and `end_date` query parameters, and reject invalid dates before any HTTP request.
+- Log redacted per-domain errors from partial daily and weekly summaries to stderr instead of silently hiding upstream failures.
+- Add an executable HTTP-boundary regression suite covering Oura date parameters, invalid-input rejection and response-envelope extraction.
+- Guard structured privacy output against future upstream-field loss while continuing to redact GPS and secret-bearing fields.
+
 ## 0.4.6 - 2026-05-29
 
 ### Docs

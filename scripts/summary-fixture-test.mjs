@@ -46,4 +46,28 @@ assert.equal(context.readiness_score, 84);
 assert.equal(context.sleep_score, 88);
 assert.equal(context.recent_training_load, 'normal');
 
+let capturedStderr = '';
+const originalStderrWrite = process.stderr.write.bind(process.stderr);
+process.stderr.write = (chunk) => {
+  capturedStderr += String(chunk);
+  return true;
+};
+try {
+  const partialClient = {
+    async get(endpoint) {
+      if (endpoint.includes('/daily_sleep')) {
+        throw new Error('synthetic Oura sleep failure');
+      }
+      return fakeClient.get(endpoint);
+    },
+  };
+  await buildDailySummary(partialClient, { days: 7, timezone: 'UTC' });
+} finally {
+  process.stderr.write = originalStderrWrite;
+}
+assert.match(
+  capturedStderr,
+  /\[oura-mcp\] summary domain error: synthetic Oura sleep failure/,
+);
+
 console.log(JSON.stringify({ ok: true, daily: daily.kind, weekly: weekly.kind }, null, 2));

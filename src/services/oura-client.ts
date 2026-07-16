@@ -273,9 +273,15 @@ function ouraDateRange(params: ListParams): Record<string, string> {
 
 function toDate(value: string): string {
   if (value === "today") return value;
-  const parsed = Date.parse(value);
-  if (!Number.isFinite(parsed)) return value.slice(0, 10);
-  return new Date(parsed).toISOString().slice(0, 10);
+  const match = /^(\d{4})-(\d{2})-(\d{2})(?:$|T)/.exec(value);
+  if (!match) throw new Error(`Invalid Oura date range value: ${value}`);
+
+  const date = `${match[1]}-${match[2]}-${match[3]}`;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  if (!Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date) {
+    throw new Error(`Invalid Oura date range value: ${value}`);
+  }
+  return date;
 }
 
 function extractRecords(payload: unknown): unknown[] {

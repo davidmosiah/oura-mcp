@@ -32,6 +32,16 @@ assert.equal(summary.map, undefined);
 const raw = applyPrivacy('/usercollection/workout', activity, 'raw');
 assert.equal(raw.map.summary_polyline, 'encoded');
 
+const futureStructured = applyPrivacy('/usercollection/daily_readiness', {
+  id: 'future-record',
+  day: '2026-07-08',
+  score: 84,
+  contributors: { recovery_index: 91 },
+  futureMetrics: { cardiovascularAge: 37 },
+}, 'structured');
+assert.deepEqual(futureStructured.contributors, { recovery_index: 91 });
+assert.deepEqual(futureStructured.futureMetrics, { cardiovascularAge: 37 });
+
 const streams = normalizeStreams({ heartrate: { data: [120, 121] }, latlng: { data: [[1, 2]] } }, 'structured', false);
 assert.equal(streams.latlng, undefined);
 assert.deepEqual(streams.heartrate.data, [120, 121]);

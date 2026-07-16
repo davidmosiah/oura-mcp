@@ -191,6 +191,7 @@ This package uses the official Oura Cloud API v2. When this README says `raw`, i
 **Daily collections** (paginated, with after/before filters and privacy-mode override)
 
 - `oura_list_daily_readiness`, `oura_list_daily_sleep`, `oura_list_daily_activity`, `oura_list_daily_spo2`
+- Offset ISO inputs keep their written calendar date when mapped to Oura's date-only `start_date` and `end_date` parameters; invalid dates fail before a network request.
 
 **Detailed collections**
 
@@ -214,6 +215,7 @@ This package uses the official Oura Cloud API v2. When this README says `raw`, i
 - OAuth tokens are stored in `~/.oura-mcp/tokens.json` with `0600` permissions and are never returned by tools.
 - The server never prints access or refresh tokens.
 - `OURA_PRIVACY_MODE` defaults to `structured`. Raw Oura JSON is opt-in via `raw` mode or per-call override.
+- Structured mode preserves upstream physiological fields, including fields added by Oura later, while removing GPS and secret-bearing values.
 - Personal info (DOB, sex, height, weight) is only accessible when the user grants the `personal` scope.
 - The MCP client never sees access or refresh tokens.
 - This is **not medical advice**. The server exposes user-authorized data for personal AI workflows, not diagnosis or treatment.

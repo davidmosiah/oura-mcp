@@ -1,4 +1,5 @@
 import type { OuraClient } from "./oura-client.js";
+import { redactErrorMessage } from "./redaction.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -61,7 +62,9 @@ async function safeGet(client: Pick<OuraClient, "get">, endpoint: string, params
   try {
     return await client.get(endpoint, params);
   } catch (error) {
-    return { error: (error as Error).message, endpoint };
+    const message = redactErrorMessage(error instanceof Error ? error.message : String(error));
+    process.stderr.write(`[oura-mcp] summary domain error: ${message}\n`);
+    return { error: message, endpoint };
   }
 }
 
