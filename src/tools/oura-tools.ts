@@ -1,5 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { createHash, randomBytes } from "node:crypto";
+import { promises as fs } from "node:fs";
+import { dirname, join } from "node:path";
+import { homedir } from "node:os";
 import {
   AgentManifestInputSchema,
   AgentManifestOutputSchema,
@@ -51,6 +55,49 @@ import { OuraClient } from "../services/oura-client.js";
 
 function client(): OuraClient {
   return new OuraClient(getConfig());
+}
+
+function generateCodeVerifier(): string {
+  return randomBytes(32).toString("base64url");
+}
+
+function generateCodeChallenge(verifier: string): string {
+  return createHash("sha256").update(verifier).digest("base64url");
+}
+
+function getPkceVerifierPath(): string {
+  return join(homedir(), ".oura-mcp", "pkce-verifier.json");
+}
+
+async function savePkceVerifier(verifier: string): Promise<void> {
+  const path = getPkceVerifierPath();
+  await fs.mkdir(dirname(path), { recursive: true, mode: 0o700 });
+  const data = { code_verifier: verifier, created_at: Date.now() };
+  await fs.writeFile(path, JSON.stringify(data, null, 2), { mode: 0o600 });
+}
+
+async function loadPkceVerifier(): Promise<string | null> {
+  try {
+    const path = getPkceVerifierPath();
+    const text = await fs.readFile(path, "utf8");
+    const data = JSON.parse(text) as { code_verifier: string; created_at: number };
+    const ageMs = Date.now() - data.created_at;
+    if (ageMs > 600_000) {
+      await fs.unlink(path).catch(() => undefined);
+      return null;
+    }
+    return data.code_verifier;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
+}
+
+async function clearPkceVerifier(): Promise<void> {
+  const path = getPkceVerifierPath();
+  await fs.unlink(path).catch((error: NodeJS.ErrnoException) => {
+    if (error.code !== "ENOENT") throw error;
+  });
 }
 
 function registerCollectionTool(server: McpServer, name: string, title: string, endpoint: string, description: string, latestResourceUri?: string): void {
@@ -370,7 +417,10 @@ export function registerOuraTools(server: McpServer): void {
   }, async (params) => {
     try {
       const config = getConfig();
-      const url = new OuraClient(config).authUrl(params.state, params.scopes);
+      const codeVerifier = generateCodeVerifier();
+      const codeChallenge = generateCodeChallenge(codeVerifier);
+      await savePkceVerifier(codeVerifier);
+      const url = new OuraClient(config).authUrl(params.state, params.scopes, codeChallenge);
       const output = { auth_url: url, redirect_uri: config.redirectUri, scopes: params.scopes?.length ? params.scopes : config.scopes, next_step: "Open auth_url, approve access, then pass the returned code or full redirect URL to oura_exchange_code." };
       return makeResponse(output, params.response_format, bulletList("Oura OAuth URL", output));
     } catch (error) {
@@ -386,7 +436,9 @@ export function registerOuraTools(server: McpServer): void {
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true }
   }, async (params) => {
     try {
-      const result = await client().exchangeCode(params.code);
+      const codeVerifier = await loadPkceVerifier();
+      const result = await client().exchangeCode(params.code, codeVerifier ?? undefined);
+      await clearPkceVerifier();
       const output = { ...result, note: "Token values were stored locally and intentionally omitted from this response." };
       return makeResponse(output, params.response_format, bulletList("Oura OAuth Exchange", output));
     } catch (error) {

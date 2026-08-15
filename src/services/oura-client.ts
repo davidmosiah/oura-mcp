@@ -49,7 +49,7 @@ export class OuraClient {
     this.tokenStore = new TokenStore(config.tokenPath);
   }
 
-  authUrl(state?: string, scopes?: string[]): string {
+  authUrl(state?: string, scopes?: string[], codeChallenge?: string): string {
     const params = new URLSearchParams({
       client_id: this.config.clientId,
       redirect_uri: this.config.redirectUri,
@@ -57,16 +57,23 @@ export class OuraClient {
       scope: (scopes?.length ? scopes : this.config.scopes).join(" ")
     });
     if (state) params.set("state", state);
+    if (codeChallenge) {
+      params.set("code_challenge", codeChallenge);
+      params.set("code_challenge_method", "S256");
+    }
     return `${OURA_AUTH_URL}?${params.toString()}`;
   }
 
-  async exchangeCode(input: string): Promise<{ ok: true; token_path: string; scope?: string; expires_at?: number }> {
+  async exchangeCode(input: string, codeVerifier?: string): Promise<{ ok: true; token_path: string; scope?: string; expires_at?: number }> {
     const code = this.extractCode(input);
     const body = new URLSearchParams({
       grant_type: "authorization_code",
       code,
       redirect_uri: this.config.redirectUri
     });
+    if (codeVerifier) {
+      body.set("code_verifier", codeVerifier);
+    }
     const tokens = await this.requestTokens(body);
     const redirectScope = this.extractScope(input);
     await this.tokenStore.withLock(async () => this.tokenStore.write({ ...tokens, scope: tokens.scope ?? redirectScope }));

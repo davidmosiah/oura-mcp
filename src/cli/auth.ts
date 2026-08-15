@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { spawn } from "node:child_process";
 import { getConfig } from "../services/config.js";
 import { OuraClient } from "../services/oura-client.js";
@@ -8,6 +8,14 @@ export interface LocalRedirectPlan {
   host: string;
   port: number;
   path: string;
+}
+
+function generateCodeVerifier(): string {
+  return randomBytes(32).toString("base64url");
+}
+
+function generateCodeChallenge(verifier: string): string {
+  return createHash("sha256").update(verifier).digest("base64url");
 }
 
 export function parseLocalRedirectUri(value: string): LocalRedirectPlan {
@@ -28,9 +36,11 @@ export async function runAuthCommand(args: string[]): Promise<number> {
   const json = args.includes("--json");
   const config = getConfig();
   const redirect = parseLocalRedirectUri(config.redirectUri);
-  const state = randomBytes(4).toString("hex");
+  const state = randomBytes(16).toString("hex");
+  const codeVerifier = generateCodeVerifier();
+  const codeChallenge = generateCodeChallenge(codeVerifier);
   const client = new OuraClient(config);
-  const authUrl = client.authUrl(state);
+  const authUrl = client.authUrl(state, undefined, codeChallenge);
   const timeoutMs = Number(process.env.OURA_AUTH_TIMEOUT_MS ?? 300_000);
 
   const result = await waitForOAuthCode(redirect, state, timeoutMs, async (url) => {
@@ -54,7 +64,7 @@ export async function runAuthCommand(args: string[]): Promise<number> {
     if (!noOpen) openBrowser(url);
   }, authUrl);
 
-  const exchange = await client.exchangeCode(result.code);
+  const exchange = await client.exchangeCode(result.code, codeVerifier);
   const output = {
     ok: true,
     token_path: exchange.token_path,
