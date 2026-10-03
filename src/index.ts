@@ -9,6 +9,7 @@ import { runCliCommand } from "./cli/commands.js";
 import { registerOuraPrompts } from "./prompts/oura-prompts.js";
 import { registerOuraResources } from "./resources/oura-resources.js";
 import { registerOuraTools } from "./tools/oura-tools.js";
+import { installClientSafeToolSchemas } from "./services/client-safe-json-schema.js";
 
 function createServer(): McpServer {
   const server = new McpServer({
@@ -17,6 +18,7 @@ function createServer(): McpServer {
   });
 
   registerOuraTools(server);
+  installClientSafeToolSchemas(server);
   registerOuraResources(server);
   registerOuraPrompts(server);
   return server;

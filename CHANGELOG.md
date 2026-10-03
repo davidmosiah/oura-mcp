@@ -1,3 +1,9 @@
+## 0.7.4 - 2026-10-03
+
+### Fixed
+
+- Tool discovery now advertises JSON Schema 2020-12 for input and output schemas so Claude Desktop can validate and invoke tools over stdio and HTTP (#14). Runtime Zod validation and tool metadata are preserved.
+
 ## 0.7.3 - 2026-09-01
 
 ### Fixed
