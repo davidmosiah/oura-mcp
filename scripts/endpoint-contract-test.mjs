@@ -108,6 +108,7 @@ try {
     const storage = {
       get(method, requestUrl) { calls.gets++; return cached.get(`${method} ${requestUrl}`); },
       set(method, requestUrl, payload) { calls.sets++; cached.set(`${method} ${requestUrl}`, payload); },
+      status() { return { enabled: true, path: 'synthetic-cache.sqlite', entries: cached.size }; },
     };
     scoped.getCache = () => { calls.opens++; return storage; };
     let credential = 'synthetic-A';
@@ -149,6 +150,8 @@ try {
       scenario.sameCredential ? 'Bearer synthetic-A' : 'Bearer synthetic-B',
       ...(scenario.refresh ? ['Bearer synthetic-refreshed'] : []),
     ], scenario.name);
+    assert.equal(scoped.cacheStatus().enabled, false, `${scenario.name}: cache status must not report a persistent cache that authenticated reads never use`);
+    assert.equal(calls.opens, 0, `${scenario.name}: cache status must not open persistent cache`);
   }
   console.log(JSON.stringify({ ok: true, suite: 'endpoint-contracts', requests: requestedUrls.length, persistent_cases: persistentCases.length }, null, 2));
 } finally {

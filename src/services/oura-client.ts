@@ -1,7 +1,7 @@
 import { URL, URLSearchParams } from "node:url";
 import { DEFAULT_LIMIT, DEFAULT_LIST_LOOKBACK_DAYS, LATEST_SCAN_MAX_PAGES, OURA_API_BASE_URL, OURA_AUTH_URL, OURA_REVOKE_URL, OURA_TOKEN_URL, MAX_OURA_LIMIT } from "../constants.js";
 import type { OuraConfig, OuraTokenSet } from "../types.js";
-import { disabledCacheStatus, OuraCache, type CacheStatus } from "./cache.js";
+import { disabledCacheStatus, type CacheStatus } from "./cache.js";
 import { fetchWithCache, getCacheStats } from "./http-cache.js";
 import { fetchWithRetry as fetchWithRetryMiddleware } from "./http-retry.js";
 import { mostRecentRecord } from "./recency.js";
@@ -43,7 +43,6 @@ export interface LatestResult {
 
 export class OuraClient {
   private readonly tokenStore: TokenStore;
-  private cache?: OuraCache;
 
   constructor(private readonly config: OuraConfig) {
     this.tokenStore = new TokenStore(config.tokenPath);
@@ -108,8 +107,8 @@ export class OuraClient {
       default_ttl_seconds: 60,
       bypass_env_var: "OURA_NO_CACHE"
     };
-    if (!this.config.cacheEnabled) return { ...disabledCacheStatus(this.config.cachePath), http_cache };
-    return { ...this.getCache().status(), http_cache };
+    // Authenticated responses are never cached, so the SQLite cache stays off even when configured.
+    return { ...disabledCacheStatus(this.config.cachePath), http_cache };
   }
 
   /**
@@ -336,11 +335,6 @@ export class OuraClient {
       throw new Error(`Oura API HTTP ${response.status}: ${redactErrorMessage(details || response.statusText)}`);
     }
     return payload ?? {};
-  }
-
-  private getCache(): OuraCache {
-    this.cache ??= new OuraCache(this.config.cachePath);
-    return this.cache;
   }
 
   private async fetchWithRetry(url: string, init: RequestInit): Promise<Response> {

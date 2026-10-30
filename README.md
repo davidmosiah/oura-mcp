@@ -246,7 +246,7 @@ OURA_REDIRECT_URI=http://127.0.0.1:3000/callback
 # Optional
 OURA_SCOPES="daily heartrate personal workout spo2"
 OURA_PRIVACY_MODE=structured        # summary | structured | raw
-OURA_CACHE=sqlite                   # optional read-through cache
+OURA_CACHE=sqlite                   # no effect: authenticated responses are never cached
 OURA_TOKEN_PATH=~/.oura-mcp/tokens.json
 OURA_CACHE_PATH=~/.oura-mcp/cache.sqlite
 ```
