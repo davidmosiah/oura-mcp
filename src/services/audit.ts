@@ -10,10 +10,6 @@ function parsePrivacyMode(value: string | undefined): PrivacyMode {
   return "structured";
 }
 
-function parseBool(value: string | undefined): boolean {
-  return Boolean(value && ["1", "true", "yes", "on", "sqlite"].includes(value.toLowerCase()));
-}
-
 export function buildPrivacyAudit(): Record<string, unknown> {
   const requiredEnv = ["OURA_CLIENT_ID", "OURA_CLIENT_SECRET", "OURA_REDIRECT_URI"];
   const sources = loadConfigSources();
@@ -28,7 +24,7 @@ export function buildPrivacyAudit(): Record<string, unknown> {
     privacy_mode_default: parsePrivacyMode(value("OURA_PRIVACY_MODE")),
     raw_payloads_opt_in: true,
     gps_redaction_default: true,
-    cache_enabled: parseBool(value("OURA_CACHE")),
+    cache_enabled: false,
     cache_path: value("OURA_CACHE_PATH") ?? join(homedir(), ".oura-mcp", "cache.sqlite"),
     token_path: value("OURA_TOKEN_PATH") ?? join(homedir(), ".oura-mcp", "tokens.json"),
     stdout_safe: true,
@@ -36,6 +32,7 @@ export function buildPrivacyAudit(): Record<string, unknown> {
     required_env_present: Object.fromEntries(requiredEnv.map((name) => [name, Boolean(value(name as keyof typeof sources.values))])),
     redacted_key_patterns: REDACTED_KEY_PATTERNS,
     notes: [
+      "Authenticated Oura responses are never cached; OURA_CACHE is accepted but has no effect.",
       "This is an unofficial Oura integration.",
       "OAuth tokens are stored locally and are not returned by tools.",
       "Raw Oura payloads require OURA_PRIVACY_MODE=raw or privacy_mode=raw.",
