@@ -496,7 +496,7 @@ export function registerOuraTools(server: McpServer): void {
 
   server.registerTool("oura_cache_status", {
     title: "Oura Cache Status",
-    description: "Show optional local SQLite cache status. Enable with OURA_CACHE=sqlite or OURA_CACHE=true.",
+    description: "Show local cache status. Authenticated Oura responses are never cached, so OURA_CACHE has no effect and the SQLite cache stays off.",
     inputSchema: ResponseOnlyInputSchema.shape,
     outputSchema: CacheStatusOutputSchema.shape,
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }
