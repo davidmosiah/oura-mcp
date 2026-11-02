@@ -1,5 +1,10 @@
 ## Unreleased
 
+## Unreleased
+
+- Update vulnerable dependencies and explicitly bound tool arguments to 10,000 elements.
+- Reject compressed HTTP request bodies; add synthetic stdio/HTTP input-limit regressions.
+
 ### Security
 
 - Raise transitive npm overrides so Dependabot grouped security updates can resolve: `qs@6.16.0`, `hono@4.13.7`, `fast-uri@3.1.8`, `ip-address@10.7.1`. Stale pins (`qs@6.15.2`, `hono@4.13.1`, `fast-uri@3.1.5`, `ip-address@10.4.0`) made the npm security job fail with `security_update_not_possible` from 2026-09-08.
