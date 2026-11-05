@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "oura-mcp",
+  "version": "0.7.4",
+  "description": "Read the user's Oura Ring readiness, sleep, HRV and activity through the local oura MCP server.",
+  "author": {
+    "name": "David Mosiah",
+    "url": "https://github.com/davidmosiah"
+  },
+  "homepage": "https://github.com/davidmosiah/oura-mcp",
+  "repository": "https://github.com/davidmosiah/oura-mcp",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "fitness",
+    "health",
+    "heart-rate",
+    "hermes",
+    "mcp",
+    "model-context-protocol",
+    "oura",
+    "sleep"
+  ]
+}

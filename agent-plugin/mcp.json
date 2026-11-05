@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "oura": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "oura-mcp-unofficial@0.7.4"
+      ],
+      "cwd": "${PLUGIN_DATA}"
+    }
+  }
+}
