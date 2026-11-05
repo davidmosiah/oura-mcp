@@ -6,7 +6,7 @@ description: >-
 
 # Oura
 
-MCP server `oura` from the `oura-mcp-unofficial@0.7.4` npm package, run locally through `npx`. It reads readiness, sleep stages and score, HRV, resting heart rate, activity, workouts and tags. Data source: the official Oura Cloud API v2.
+MCP server `oura` from the `oura-mcp-unofficial@0.8.0` npm package, run locally through `npx`. It reads readiness, sleep stages and score, HRV, resting heart rate, activity, workouts and tags. Data source: the official Oura Cloud API v2.
 
 ## Workflow
 
@@ -17,9 +17,9 @@ MCP server `oura` from the `oura-mcp-unofficial@0.7.4` npm package, run locally 
 ## Setup (the user runs this in a terminal, not in chat)
 
 ```bash
-npx -y oura-mcp-unofficial@0.7.4 setup --client generic
-npx -y oura-mcp-unofficial@0.7.4 auth
-npx -y oura-mcp-unofficial@0.7.4 doctor
+npx -y oura-mcp-unofficial@0.8.0 setup --client generic
+npx -y oura-mcp-unofficial@0.8.0 auth
+npx -y oura-mcp-unofficial@0.8.0 doctor
 ```
 
 `setup` asks for the Oura developer app client ID and secret and saves them locally (`--client generic` because this plugin already registers the server with Hermes); `auth` opens the Oura consent page in the browser and stores the OAuth tokens under `~/.oura-mcp/` with 0600 permissions; `doctor` confirms readiness.
